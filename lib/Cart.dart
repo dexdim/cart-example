@@ -38,7 +38,9 @@ class CartState extends State<Cart> {
                       topRight: Radius.circular(10.0),
                       bottomRight: Radius.circular(10.0)),
                   image: DecorationImage(
-                      image: NetworkImage(d.image), fit: BoxFit.fill)),
+                      image: NetworkImage(
+                          'http://www.malmalioboro.co.id/${d.gambar}'),
+                      fit: BoxFit.fill)),
             ),
             Expanded(
                 child: Padding(
@@ -50,7 +52,7 @@ class CartState extends State<Cart> {
                     children: <Widget>[
                       Expanded(
                         child: Text(
-                          d.name,
+                          d.nama,
                           style: TextStyle(
                               fontWeight: FontWeight.w600, fontSize: 15.0),
                         ),
@@ -77,7 +79,7 @@ class CartState extends State<Cart> {
                   SizedBox(
                     height: 5.0,
                   ),
-                  Text("Price ${d.price.toString()}"),
+                  Text("Harga ${d.harga.toString()}"),
                 ],
               ),
             ))
@@ -93,7 +95,7 @@ class CartState extends State<Cart> {
     return Scaffold(
         appBar: AppBar(
           elevation: 0.0,
-          title: Text("Cart List"),
+          title: Text("Daftar Keranjang"),
         ),
         backgroundColor: Colors.white,
         body: Container(

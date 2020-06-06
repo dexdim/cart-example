@@ -1,79 +1,19 @@
 import 'dart:io';
+import 'dart:async';
+import 'dart:convert';
 import 'package:scoped_model/scoped_model.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
-
 import 'package:localstorage/localstorage.dart';
+import 'package:http/http.dart' as http;
 
-var data = [
-  {
-    "name": "Nike",
-    "price": 25.0,
-    "fav": true,
-    "rating": 4.5,
-    "image":
-        "https://rukminim1.flixcart.com/image/832/832/jao8uq80/shoe/3/r/q/sm323-9-sparx-white-original-imaezvxwmp6qz6tg.jpeg?q=70"
-  },
-  {
-    "name": "Brasher Traveller Brasher Traveller ",
-    "price": 200.0,
-    "fav": true,
-    "rating": 4.5,
-    "image":
-        "https://cdn-image.travelandleisure.com/sites/default/files/styles/1600x1000/public/merrell_0.jpg?itok=wFRPiIPw"
-  },
-  {
-    "name": "Puma Descendant Ind",
-    "price": 299.0,
-    "fav": false,
-    "rating": 4.5,
-    "image":
-        "https://n4.sdlcdn.com/imgs/d/h/i/Asian-Gray-Running-Shoes-SDL691594953-1-2127d.jpg"
-  },
-  {
-    "name": "Running Shoe Brooks Highly",
-    "price": 3001.0,
-    "fav": true,
-    "rating": 3.5,
-    "image":
-        "https://cdn.pixabay.com/photo/2014/06/18/18/42/running-shoe-371625_960_720.jpg"
-  },
-  {
-    "name": "Ugly Shoe Trends 2018",
-    "price": 25.0,
-    "fav": true,
-    "rating": 4.5,
-    "image":
-        "https://pixel.nymag.com/imgs/fashion/daily/2018/04/18/uglee-shoes/70-fila-disruptor.w710.h473.2x.jpg"
-  },
-  {
-    "name": "Nordstrom",
-    "price": 214.0,
-    "fav": false,
-    "rating": 4.0,
-    "image":
-        "https://n.nordstrommedia.com/ImageGallery/store/product/Zoom/9/_100313809.jpg?h=365&w=240&dpr=2&quality=45&fit=fill&fm=jpg"
-  },
-  {
-    "name": "ShoeGuru",
-    "price": 205.0,
-    "fav": true,
-    "rating": 4.0,
-    "image":
-        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRc_R7jxbs8Mk2wjW9bG6H9JDbyEU_hRHmjhr3EYn-DYA99YU6zIw"
-  },
-  {
-    "name": "shoefly black",
-    "price": 200.0,
-    "fav": false,
-    "rating": 4.9,
-    "image":
-        "https://rukminim1.flixcart.com/image/612/612/j95y4cw0/shoe/d/p/8/sho-black-303-9-shoefly-black-original-imaechtbjzqbhygf.jpeg?q=70"
-  }
-];
+List data;
 
 class AppModel extends Model {
+  final String url =
+      'http://www.malmalioboro.co.id/index.php/api/produk/get_list';
+
   List<Item> _items = [];
   List<Data> _data = [];
   List<Data> _cart = [];
@@ -83,6 +23,15 @@ class AppModel extends Model {
   Directory tempDir;
   String tempPath;
   final LocalStorage storage = new LocalStorage('app_data');
+
+  Future<String> getData() async {
+    Map body = {'idtenan': '136'};
+
+    http.Response response = await http.post(Uri.encodeFull(url), body: body);
+
+    data = json.decode(response.body);
+    return 'sukses!';
+  }
 
   AppModel() {
     // Create DB Instance & Create Table
@@ -118,30 +67,27 @@ class AppModel extends Model {
         print("DB Crated");
       });
     } catch (e) {
-      print("ERRR >>>>");
+      print("ERRR >>>");
       print(e);
     }
   }
 
   createTable() async {
     try {
-      var qry = "CREATE TABLE IF NOT EXISTS shopping ( "
+      var qry = "CREATE TABLE IF NOT EXISTS item_list ( "
           "id INTEGER PRIMARY KEY,"
-          "name TEXT,"
-          "image Text,"
-          "price REAL,"
-          "fav INTEGER,"
-          "rating REAL,"
+          "nama TEXT,"
+          "deskripsi TEXT"
+          "gambar TEXT,"
+          "harga REAL,"
           "datetime DATETIME)";
       await this._db.execute(qry);
       qry = "CREATE TABLE IF NOT EXISTS cart_list ( "
           "id INTEGER PRIMARY KEY,"
-          "shop_id INTEGER,"
-          "name TEXT,"
-          "image Text,"
-          "price REAL,"
-          "fav INTEGER,"
-          "rating REAL,"
+          "nama TEXT,"
+          "deskripsi TEXT"
+          "gambar TEXT,"
+          "harga REAL,"
           "datetime DATETIME)";
 
       await this._db.execute(qry);
@@ -163,15 +109,14 @@ class AppModel extends Model {
   fetchLocalData() async {
     try {
       // Get the records
-      List<Map> list = await this._db.rawQuery('SELECT * FROM shopping');
+      List<Map> list = await this._db.rawQuery('SELECT * FROM item_list');
       list.map((dd) {
         Data d = new Data();
         d.id = dd["id"];
-        d.name = dd["name"];
-        d.image = dd["image"];
-        d.price = dd["price"];
-        d.fav = dd["fav"] == 1 ? true : false;
-        d.rating = dd["rating"];
+        d.nama = dd["nama"];
+        d.deskripsi = dd["deskripsi"];
+        d.gambar = dd["gambar"];
+        d.harga = dd["harga"];
         _data.add(d);
       }).toList();
       notifyListeners();
@@ -188,14 +133,13 @@ class AppModel extends Model {
           print("Called insert $i");
           Data d = new Data();
           d.id = i + 1;
-          d.name = data[i]["name"];
-          d.image = data[i]["image"];
-          d.price = data[i]["price"];
-          d.fav = data[i]["fav"];
-          d.rating = data[i]["rating"];
+          d.nama = data[i]["nama"];
+          d.deskripsi = data[i]["deskripsi"];
+          d.harga = data[i]["harga"];
+          d.gambar = data[i]["gambar"];
           try {
             var qry =
-                'INSERT INTO shopping(name, price, image,rating,fav) VALUES("${d.name}",${d.price}, "${d.image}",${d.rating},${d.fav ? 1 : 0})';
+                'INSERT INTO item_list(nama, deskripsi, harga, gambar) VALUES("${d.nama}",${d.deskripsi},${d.harga},"${d.gambar}")';
             var _res = await tx.rawInsert(qry);
           } catch (e) {
             print("ERRR >>>");
@@ -217,7 +161,7 @@ class AppModel extends Model {
     await this._db.transaction((tx) async {
       try {
         var qry =
-            'INSERT INTO cart_list(shop_id,name, price, image,rating,fav) VALUES(${d.id},"${d.name}",${d.price}, "${d.image}",${d.rating},${d.fav ? 1 : 0})';
+            'INSERT INTO cart_list(shop_id,nama, deskripsi, harga,gambar) VALUES(${d.id},"${d.nama}",${d.deskripsi},"${d.harga}",${d.gambar})';
         var _res = await tx.execute(qry);
         this.fetchCartList();
       } catch (e) {
@@ -236,12 +180,10 @@ class AppModel extends Model {
       list.map((dd) {
         Data d = new Data();
         d.id = dd["id"];
-        d.name = dd["name"];
-        d.image = dd["image"];
-        d.price = dd["price"];
-        d.shopID = dd["shop_id"];
-        d.fav = dd["fav"] == 1 ? true : false;
-        d.rating = dd["rating"];
+        d.nama = dd["nama"];
+        d.deskripsi = dd["deskripsi"];
+        d.harga = dd["harga"];
+        d.gambar = dd["gambar"];
         _cart.add(d);
       }).toList();
       notifyListeners();
@@ -251,30 +193,6 @@ class AppModel extends Model {
     }
   }
 
-  updateFavItem(Data data) async {
-    try {
-      var qry =
-          "UPDATE shopping set fav = ${data.fav ? 1 : 0} where id = ${data.id}";
-      this._db.rawUpdate(qry).then((res) {
-        print("UPDATE RES $res");
-      }).catchError((e) {
-        print("UPDATE ERR $e");
-      });
-    } catch (e) {
-      print("ERRR @@");
-      print(e);
-    }
-  }
-
-  // Add In fav list
-  addToFav(Data data) {
-    var _index = _data.indexWhere((d) => d.id == data.id);
-    data.fav = !data.fav;
-    _data.insert(_index, data);
-    this.updateFavItem(data);
-    notifyListeners();
-  }
-
   // Item List
   List<Data> get itemListing => _data;
 
@@ -282,12 +200,11 @@ class AppModel extends Model {
   void addItem(Data dd) {
     Data d = new Data();
     d.id = _data.length + 1;
-    d.name = "New";
-    d.image =
+    d.nama = "New";
+    d.deskripsi = "Barcode";
+    d.harga = 154.0;
+    d.gambar =
         "https://rukminim1.flixcart.com/image/832/832/jao8uq80/shoe/3/r/q/sm323-9-sparx-white-original-imaezvxwmp6qz6tg.jpeg?q=70";
-    d.price = 154.0;
-    d.fav = false;
-    d.rating = 4.0;
     _data.add(d);
     notifyListeners();
   }
@@ -299,20 +216,21 @@ class AppModel extends Model {
   void addCart(Data dd) {
     print(dd);
     print(_cart);
-    int _index = _cart.indexWhere((d) => d.shopID == dd.id);
+    int _index = _cart.indexWhere((d) => d.id == dd.id);
     if (_index > -1) {
       success = false;
-      cartMsg = "${dd.name.toUpperCase()} already added in Cart list.";
+      cartMsg = "${dd.nama.toUpperCase()} sudah ada di daftar keranjang.";
     } else {
       this.insertInCart(dd);
       success = true;
-      cartMsg = "${dd.name.toUpperCase()} successfully added in cart list.";
+      cartMsg =
+          "${dd.nama.toUpperCase()} sukses ditambahkan dalam daftar keranjang.";
     }
   }
 
   removeCartDB(Data d) async {
     try {
-      var qry = "DELETE FROM cart_list where id = $d.id";
+      var qry = "DELETE FROM cart_list where id = ${d.id}";
       this._db.rawDelete(qry).then((data) {
         print(data);
         int _index = _cart.indexWhere((dd) => dd.id == d.id);
@@ -333,17 +251,15 @@ class AppModel extends Model {
 }
 
 class Item {
-  final String name;
+  final String nama;
 
-  Item(this.name);
+  Item(this.nama);
 }
 
 class Data {
-  String name;
   int id;
-  String image;
-  double rating;
-  double price;
-  bool fav;
-  int shopID;
+  String nama;
+  String deskripsi;
+  double harga;
+  String gambar;
 }

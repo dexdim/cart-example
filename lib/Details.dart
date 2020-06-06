@@ -93,19 +93,19 @@ class DetailsState extends State<Details> {
                             },
                             children: <Widget>[
                               Image.network(
-                                widget.detail.image,
+                                'http://www.malmalioboro.co.id/${widget.detail.gambar}',
                                 height: 150.0,
                               ),
                               Image.network(
-                                widget.detail.image,
+                                'http://www.malmalioboro.co.id/${widget.detail.gambar}',
                                 height: 150.0,
                               ),
                               Image.network(
-                                widget.detail.image,
+                                'http://www.malmalioboro.co.id/${widget.detail.gambar}',
                                 height: 150.0,
                               ),
                               Image.network(
-                                widget.detail.image,
+                                'http://www.malmalioboro.co.id/${widget.detail.gambar}',
                                 height: 150.0,
                               )
                             ],
@@ -135,30 +135,6 @@ class DetailsState extends State<Details> {
                           verticalDirection: VerticalDirection.down,
                           crossAxisAlignment: CrossAxisAlignment.end,
                           mainAxisAlignment: MainAxisAlignment.end,
-                          children: <Widget>[
-                            ScopedModelDescendant<AppModel>(
-                              builder: (context, child, model) {
-                                return GestureDetector(
-                                  onTap: () {
-                                    print(widget.detail.id);
-                                    model.addToFav(widget.detail);
-                                    showSnak(
-                                        widget.detail.fav, widget.detail.name);
-                                  },
-                                  child: widget.detail.fav
-                                      ? Icon(
-                                          Icons.favorite,
-                                          size: 20.0,
-                                          color: Colors.red,
-                                        )
-                                      : Icon(
-                                          Icons.favorite_border,
-                                          size: 20.0,
-                                        ),
-                                );
-                              },
-                            )
-                          ],
                         ),
                       ))
                 ],
@@ -173,7 +149,7 @@ class DetailsState extends State<Details> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     Text(
-                      widget.detail.name,
+                      widget.detail.nama,
                       style: TextStyle(
                           fontWeight: FontWeight.w500, fontSize: 19.0),
                     ),
@@ -208,7 +184,7 @@ class DetailsState extends State<Details> {
                           style: TextStyle(fontSize: 12.0, color: Colors.grey),
                         ),
                       ),
-                      Text("\$${widget.detail.price.toString()}",
+                      Text("\$${widget.detail.harga.toString()}",
                           style: TextStyle(
                               fontSize: 25.0, fontWeight: FontWeight.w600)),
                     ],

@@ -2,7 +2,6 @@ import "package:flutter/material.dart";
 import "package:scoped_model/scoped_model.dart";
 import "Cart.dart";
 import "ScopeManage.dart";
-import 'package:flutter_rating/flutter_rating.dart';
 import "Details.dart";
 
 class Home extends StatefulWidget {
@@ -19,13 +18,13 @@ class Home extends StatefulWidget {
 }
 
 class HomeState extends State<Home> {
-  Widget gridGenerate(List<Data> data, aspectRadtio) {
+  Widget gridGenerate(List<Data> data, aspectRatio) {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: GridView.builder(
         shrinkWrap: true,
         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: 2, childAspectRatio: aspectRadtio),
+            crossAxisCount: 2, childAspectRatio: aspectRatio),
         itemBuilder: (BuildContext context, int index) {
           return Padding(
               padding: EdgeInsets.all(5.0),
@@ -58,23 +57,11 @@ class HomeState extends State<Home> {
                                 Expanded(
                                   child: Container(
                                     child: Image.network(
-                                      data[index].image,
+                                      'http://www.malmalioboro.co.id/${data[index].gambar}',
                                       fit: BoxFit.contain,
                                     ),
                                   ),
                                 ),
-                                Container(
-                                  child: data[index].fav
-                                      ? Icon(
-                                          Icons.favorite,
-                                          size: 20.0,
-                                          color: Colors.red,
-                                        )
-                                      : Icon(
-                                          Icons.favorite_border,
-                                          size: 20.0,
-                                        ),
-                                )
                               ],
                             ),
                           ),
@@ -85,7 +72,7 @@ class HomeState extends State<Home> {
                         Padding(
                           padding: EdgeInsets.only(left: 10.0),
                           child: Text(
-                            "${data[index].name}",
+                            "${data[index].nama}",
                             style: TextStyle(
                                 fontWeight: FontWeight.w600, fontSize: 15.0),
                           ),
@@ -95,16 +82,10 @@ class HomeState extends State<Home> {
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: <Widget>[
-                              new StarRating(
-                                  size: 15.0,
-                                  rating: data[index].rating,
-                                  color: Colors.orange,
-                                  borderColor: Colors.grey,
-                                  starCount: 5),
                               Padding(
                                 padding: EdgeInsets.only(right: 10.0),
                                 child: Text(
-                                  "\$${data[index].price.toString()}",
+                                  "\Rp. ${data[index].harga.toString()},-",
                                   style: TextStyle(fontWeight: FontWeight.w500),
                                 ),
                               )
@@ -131,7 +112,7 @@ class HomeState extends State<Home> {
     // TODO: implement build
     return Scaffold(
       appBar: AppBar(
-        title: Text("Home"),
+        title: Text("Supermarket Malioboro Mall"),
         elevation: 0.0,
         actions: <Widget>[
           Stack(
