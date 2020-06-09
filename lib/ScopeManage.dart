@@ -8,13 +8,11 @@ import 'package:path_provider/path_provider.dart';
 import 'package:localstorage/localstorage.dart';
 import 'package:http/http.dart' as http;
 
-List data;
-
 class AppModel extends Model {
   final String url =
       'http://www.malmalioboro.co.id/index.php/api/produk/get_list';
-
   List<Item> _items = [];
+  List<Data> data = new List<Data>();
   List<Data> _data = [];
   List<Data> _cart = [];
   String cartMsg = "";
@@ -24,13 +22,18 @@ class AppModel extends Model {
   String tempPath;
   final LocalStorage storage = new LocalStorage('app_data');
 
-  Future<String> getData() async {
+  Future<List<Data>> getData() async {
     Map body = {'idtenan': '136'};
 
     http.Response response = await http.post(Uri.encodeFull(url), body: body);
 
-    data = json.decode(response.body);
-    return 'sukses!';
+    var jsonResponse = json.decode(response.body);
+
+    for (var dataJson in jsonResponse) {
+      data.add(new Data.fromJson(dataJson));
+    }
+    notifyListeners();
+    return data;
   }
 
   AppModel() {
@@ -133,10 +136,10 @@ class AppModel extends Model {
           print("Called insert $i");
           Data d = new Data();
           d.id = i + 1;
-          d.nama = data[i]["nama"];
-          d.deskripsi = data[i]["deskripsi"];
-          d.harga = data[i]["harga"];
-          d.gambar = data[i]["gambar"];
+          d.nama = data[i].nama;
+          d.deskripsi = data[i].deskripsi;
+          d.harga = data[i].harga;
+          d.gambar = data[i].gambar;
           try {
             var qry =
                 'INSERT INTO item_list(nama, deskripsi, harga, gambar) VALUES("${d.nama}",${d.deskripsi},${d.harga},"${d.gambar}")';
@@ -262,4 +265,13 @@ class Data {
   String deskripsi;
   double harga;
   String gambar;
+
+  Data({this.id, this.nama, this.deskripsi, this.harga, this.gambar});
+
+  Data.fromJson(Map<String, dynamic> json)
+      : id = json['id'],
+        nama = json['nama'],
+        deskripsi = json['deskripsi'],
+        harga = json['harga'],
+        gambar = json['gambar'];
 }
