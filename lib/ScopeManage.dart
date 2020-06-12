@@ -8,6 +8,52 @@ import 'package:path_provider/path_provider.dart';
 import 'package:localstorage/localstorage.dart';
 import 'package:http/http.dart' as http;
 
+final String url =
+    'http://www.malmalioboro.co.id/index.php/api/produk/get_list';
+
+var data = [
+  {
+    "id": "244",
+    "idtenan": "136",
+    "nama": "GILLETTE FOAM SHVP LEMON LIME 50G",
+    "deskripsi": "9556149001053",
+    "harga": 23100,
+    "gambar": "assets\/images\/produk\/00f09f4950b771a6d68dfecf5ecc756a.jpg"
+  },
+  {
+    "id": "243",
+    "idtenan": "136",
+    "nama": "AB MACKEREL SPICY SAUCE 425 G",
+    "deskripsi": "9556041601344",
+    "harga": 33100,
+    "gambar": "assets\/images\/produk\/5d1b80e2d3d8f0ad61a9faed1a1e64a3.jpg"
+  },
+  {
+    "id": "242",
+    "idtenan": "136",
+    "nama": "MILO ACTIVGO ORIGINAL CAN 240ML",
+    "deskripsi": "9556001051509",
+    "harga": 10200,
+    "gambar": "assets\/images\/produk\/28933d8f85ccbc3e2332463c8d839a7d.jpg"
+  }
+];
+
+/*
+void fetchData() async {
+  try {
+    Map body = {'idtenan': '136'};
+    http.Response response = await http.post(Uri.encodeFull(url), body: body);
+    if (response.statusCode == 200 || response.statusCode == 201) {
+      data = response.body;
+      print(data);
+    }
+  } catch (e) {
+    print('ERRR &&&');
+    print(e);
+  }
+}
+*/
+
 class Data {
   int id;
   String nama;
@@ -15,14 +61,7 @@ class Data {
   double harga;
   String gambar;
 
-  Data({this.id, this.nama, this.deskripsi, this.harga, this.gambar});
-
-  Data.fromJson(Map<String, dynamic> json)
-      : id = json['id'],
-        nama = json['nama'],
-        deskripsi = json['deskripsi'],
-        harga = json['harga'],
-        gambar = json['deskripsi'];
+  //Data({this.id, this.nama, this.deskripsi, this.harga, this.gambar});
 }
 
 class AppModel extends Model {
@@ -36,27 +75,9 @@ class AppModel extends Model {
   String tempPath;
   final LocalStorage storage = new LocalStorage('app_data');
 
-  final String url =
-      'http://www.malmalioboro.co.id/index.php/api/produk/get_list';
-  List<Data> data = [];
-
-  void fetchData() async {
-    try {
-      Map body = {'idtenan': '136'};
-      http.Response response = await http.post(Uri.encodeFull(url), body: body);
-      if (response.statusCode == 200 || response.statusCode == 201) {
-        print(response.body);
-      }
-    } catch (e) {
-      print('ERRR &&&');
-      print(e);
-    }
-
-    //data = json.decode(response.body);
-  }
-
   AppModel() {
     // Create DB Instance & Create Table
+    //fetchData();
     createDB();
   }
 
@@ -155,13 +176,13 @@ class AppModel extends Model {
           print("Called insert $i");
           Data d = new Data();
           d.id = i + 1;
-          d.nama = data[i].nama;
-          d.deskripsi = data[i].deskripsi;
-          d.harga = data[i].harga;
-          d.gambar = data[i].gambar;
+          d.nama = data[i]["nama"];
+          d.deskripsi = data[i]["deskripsi"];
+          d.harga = data[i]["harga"];
+          d.gambar = data[i]["gambar"];
           try {
             var qry =
-                'INSERT INTO item_list(nama, deskripsi, harga, gambar) VALUES("${d.nama}",${d.deskripsi},${d.harga},"${d.gambar}")';
+                'INSERT INTO item_list(nama, deskripsi, harga, gambar) VALUES("${d.nama}","${d.deskripsi}",${d.harga},"${d.gambar}")';
             var _res = await tx.rawInsert(qry);
           } catch (e) {
             print("ERRR >>>");
@@ -183,7 +204,7 @@ class AppModel extends Model {
     await this._db.transaction((tx) async {
       try {
         var qry =
-            'INSERT INTO cart_list(shop_id,nama, deskripsi, harga,gambar) VALUES(${d.id},"${d.nama}",${d.deskripsi},"${d.harga}",${d.gambar})';
+            'INSERT INTO cart_list(shop_id,nama, deskripsi, harga,gambar) VALUES(${d.id},"${d.nama}","${d.deskripsi}",${d.harga},"${d.gambar}")';
         var _res = await tx.execute(qry);
         this.fetchCartList();
       } catch (e) {

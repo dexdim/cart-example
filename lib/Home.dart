@@ -85,7 +85,7 @@ class HomeState extends State<Home> {
                               Padding(
                                 padding: EdgeInsets.only(right: 10.0),
                                 child: Text(
-                                  "\Rp. ${data[index].harga.toString()},-",
+                                  "\$${data[index].harga.toString()},-",
                                   style: TextStyle(fontWeight: FontWeight.w500),
                                 ),
                               )
