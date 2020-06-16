@@ -1,6 +1,6 @@
 import 'dart:io';
-import 'dart:async';
 import 'dart:convert';
+import 'dart:async';
 import 'package:scoped_model/scoped_model.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
@@ -13,28 +13,25 @@ final String url =
 
 var data = [
   {
-    "id": "244",
-    "idtenan": "136",
+    "id": 244,
     "nama": "GILLETTE FOAM SHVP LEMON LIME 50G",
     "deskripsi": "9556149001053",
     "harga": 23100,
-    "gambar": "assets\/images\/produk\/00f09f4950b771a6d68dfecf5ecc756a.jpg"
+    "gambar": "assets/images/produk/00f09f4950b771a6d68dfecf5ecc756a.jpg"
   },
   {
-    "id": "243",
-    "idtenan": "136",
+    "id": 243,
     "nama": "AB MACKEREL SPICY SAUCE 425 G",
     "deskripsi": "9556041601344",
     "harga": 33100,
-    "gambar": "assets\/images\/produk\/5d1b80e2d3d8f0ad61a9faed1a1e64a3.jpg"
+    "gambar": "assets/images/produk/5d1b80e2d3d8f0ad61a9faed1a1e64a3.jpg"
   },
   {
-    "id": "242",
-    "idtenan": "136",
+    "id": 242,
     "nama": "MILO ACTIVGO ORIGINAL CAN 240ML",
     "deskripsi": "9556001051509",
     "harga": 10200,
-    "gambar": "assets\/images\/produk\/28933d8f85ccbc3e2332463c8d839a7d.jpg"
+    "gambar": "assets/images/produk/28933d8f85ccbc3e2332463c8d839a7d.jpg"
   }
 ];
 
@@ -110,7 +107,7 @@ class AppModel extends Model {
         print("DB Crated");
       });
     } catch (e) {
-      print("ERRR >>>");
+      print("ERRR >>>>");
       print(e);
     }
   }
