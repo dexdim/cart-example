@@ -3,6 +3,9 @@ import 'package:scoped_model/scoped_model.dart';
 import 'ScopeManage.dart';
 
 class Cart extends StatefulWidget {
+  @override
+  CartState createstate() => CartState();
+
   static final String route = 'Cart-route';
 
   @override
@@ -113,4 +116,13 @@ class CartState extends State<Cart> {
           ),
         ));
   }
+
+int sum = 0;
+
+@override
+void initState(){
+  super.initState();
+}
+
+
 }
