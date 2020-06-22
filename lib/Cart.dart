@@ -3,9 +3,6 @@ import 'package:scoped_model/scoped_model.dart';
 import 'ScopeManage.dart';
 
 class Cart extends StatefulWidget {
-  @override
-  CartState createstate() => CartState();
-
   static final String route = 'Cart-route';
 
   @override
@@ -16,6 +13,8 @@ class Cart extends StatefulWidget {
 }
 
 class CartState extends State<Cart> {
+  List cartList = AppModel.cartListing;
+
   Widget generateCart(Data d) {
     return Padding(
       padding: EdgeInsets.all(5.0),
@@ -63,7 +62,7 @@ class CartState extends State<Cart> {
                       Container(
                           alignment: Alignment.bottomRight,
                           child: ScopedModelDescendant<AppModel>(
-                            builder: (cotext, child, model) {
+                            builder: (context, child, model) {
                               return InkResponse(
                                   onTap: () {
                                     model.removeCart(d);
@@ -117,12 +116,9 @@ class CartState extends State<Cart> {
         ));
   }
 
-int sum = 0;
-
-@override
-void initState(){
-  super.initState();
-}
-
-
+  int get totalPrice {
+    return cartList.fold(0, (sum, item) {
+      return sum += item.harga;
+    });
+  }
 }
