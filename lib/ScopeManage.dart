@@ -8,74 +8,42 @@ import 'package:path_provider/path_provider.dart';
 import 'package:localstorage/localstorage.dart';
 import 'package:http/http.dart' as http;
 
-final String url =
-    'http://www.malmalioboro.co.id/index.php/api/produk/get_list';
-
-var data = [
-  {
-    "id": 244,
-    "nama": "GILLETTE FOAM SHVP LEMON LIME 50G",
-    "deskripsi": "9556149001053",
-    "harga": 23100,
-    "gambar": "assets/images/produk/00f09f4950b771a6d68dfecf5ecc756a.jpg"
-  },
-  {
-    "id": 243,
-    "nama": "AB MACKEREL SPICY SAUCE 425 G",
-    "deskripsi": "9556041601344",
-    "harga": 33100,
-    "gambar": "assets/images/produk/5d1b80e2d3d8f0ad61a9faed1a1e64a3.jpg"
-  },
-  {
-    "id": 242,
-    "nama": "MILO ACTIVGO ORIGINAL CAN 240ML",
-    "deskripsi": "9556001051509",
-    "harga": 10200,
-    "gambar": "assets/images/produk/28933d8f85ccbc3e2332463c8d839a7d.jpg"
-  }
-];
-
-/*
-void fetchData() async {
-  try {
-    Map body = {'idtenan': '136'};
-    http.Response response = await http.post(Uri.encodeFull(url), body: body);
-    if (response.statusCode == 200 || response.statusCode == 201) {
-      data = response.body;
-      print(data);
-    }
-  } catch (e) {
-    print('ERRR &&&');
-    print(e);
-  }
-}
-*/
-
 class Data {
   int id;
   String nama;
   String deskripsi;
-  double harga;
+  dynamic harga;
   String gambar;
-
-  //Data({this.id, this.nama, this.deskripsi, this.harga, this.gambar});
+  int shopid;
 }
+
+List<dynamic> data;
 
 class AppModel extends Model {
   List<Item> _items = [];
   List<Data> _data = [];
   List<Data> _cart = [];
-  String cartMsg = "";
+  String cartMsg = '';
   bool success = false;
   Database _db;
   Directory tempDir;
   String tempPath;
   final LocalStorage storage = new LocalStorage('app_data');
+  final String url =
+      'http://www.malmalioboro.co.id/index.php/api/produk/get_list';
+
+  Future<String> fetchData() async {
+    Map body = {'idtenan': '136'};
+    http.Response response = await http.post(Uri.encodeFull(url), body: body);
+    var parse = json.decode(response.body);
+    data = parse;
+    print(data);
+    createDB();
+    return 'Success!';
+  }
 
   AppModel() {
-    // Create DB Instance & Create Table
-    //fetchData();
-    createDB();
+    fetchData();
   }
 
   deleteDB() async {
@@ -83,8 +51,8 @@ class AppModel extends Model {
     String path = join(documentsDirectory.path, 'cart.db');
 
     await deleteDatabase(path);
-    if (storage.getItem("isFirst") != null) {
-      await storage.deleteItem("isFirst");
+    if (storage.getItem('isFirst') != null) {
+      await storage.deleteItem('isFirst');
     }
   }
 
@@ -94,54 +62,55 @@ class AppModel extends Model {
       String path = join(documentsDirectory.path, 'cart.db');
 
       print(path);
-//      await storage.deleteItem("isFirst");
+//      await storage.deleteItem('isFirst');
 //      await this.deleteDB();
 
       var database =
           await openDatabase(path, version: 1, onOpen: (Database db) {
         this._db = db;
-        print("OPEN DBV");
+        print('OPEN DBV');
         this.createTable();
       }, onCreate: (Database db, int version) async {
         this._db = db;
-        print("DB Crated");
+        print('DB Created');
       });
     } catch (e) {
-      print("ERRR >>>>");
+      print('ERRR >>>>');
       print(e);
     }
   }
 
   createTable() async {
     try {
-      var qry = "CREATE TABLE IF NOT EXISTS item_list ( "
-          "id INTEGER PRIMARY KEY,"
-          "nama TEXT,"
-          "deskripsi TEXT"
-          "gambar TEXT,"
-          "harga REAL,"
-          "datetime DATETIME)";
+      var qry = 'CREATE TABLE IF NOT EXISTS shopping ( '
+          'id INTEGER PRIMARY KEY,'
+          'nama TEXT,'
+          'deskripsi TEXT,'
+          'harga REAL,'
+          'gambar TEXT,'
+          'datetime DATETIME)';
       await this._db.execute(qry);
-      qry = "CREATE TABLE IF NOT EXISTS cart_list ( "
-          "id INTEGER PRIMARY KEY,"
-          "nama TEXT,"
-          "deskripsi TEXT"
-          "gambar TEXT,"
-          "harga REAL,"
-          "datetime DATETIME)";
+      qry = 'CREATE TABLE IF NOT EXISTS cart_list ( '
+          'id INTEGER PRIMARY KEY,'
+          'shopid INTEGER,'
+          'nama TEXT,'
+          'deskripsi TEXT,'
+          'harga REAL,'
+          'gambar TEXT,'
+          'datetime DATETIME)';
 
       await this._db.execute(qry);
 
-      var _flag = storage.getItem("isFirst");
-      print("FLAG IS FIRST $_flag");
-      if (_flag == "true") {
+      var _flag = storage.getItem('isFirst');
+      print('FLAG IS FIRST $_flag');
+      if (_flag == 'true') {
         this.fetchLocalData();
         this.fetchCartList();
       } else {
         this.insertInLocal();
       }
     } catch (e) {
-      print("ERRR ^^^");
+      print('ERRR ^^^');
       print(e);
     }
   }
@@ -149,19 +118,19 @@ class AppModel extends Model {
   fetchLocalData() async {
     try {
       // Get the records
-      List<Map> list = await this._db.rawQuery('SELECT * FROM item_list');
+      List<Map> list = await this._db.rawQuery('SELECT * FROM shopping');
       list.map((dd) {
         Data d = new Data();
-        d.id = dd["id"];
-        d.nama = dd["nama"];
-        d.deskripsi = dd["deskripsi"];
-        d.gambar = dd["gambar"];
-        d.harga = dd["harga"];
+        d.id = dd['id'];
+        d.nama = dd['nama'];
+        d.deskripsi = dd['deskripsi'];
+        d.gambar = dd['gambar'];
+        d.harga = dd['harga'];
         _data.add(d);
       }).toList();
       notifyListeners();
     } catch (e) {
-      print("ERRR %%%");
+      print('ERRR %%%');
       print(e);
     }
   }
@@ -170,29 +139,29 @@ class AppModel extends Model {
     try {
       await this._db.transaction((tx) async {
         for (var i = 0; i < data.length; i++) {
-          print("Called insert $i");
+          print('Called insert $i');
           Data d = new Data();
           d.id = i + 1;
-          d.nama = data[i]["nama"];
-          d.deskripsi = data[i]["deskripsi"];
-          d.harga = data[i]["harga"];
-          d.gambar = data[i]["gambar"];
+          d.nama = data[i]['nama'];
+          d.deskripsi = data[i]['deskripsi'];
+          d.gambar = data[i]['gambar'];
+          d.harga = data[i]['harga'];
           try {
             var qry =
-                'INSERT INTO item_list(nama, deskripsi, harga, gambar) VALUES("${d.nama}","${d.deskripsi}",${d.harga},"${d.gambar}")';
+                "INSERT INTO shopping(nama, deskripsi, harga, gambar) VALUES('${d.nama}', '${d.deskripsi}', ${d.harga}, '${d.gambar}')";
             var _res = await tx.rawInsert(qry);
           } catch (e) {
-            print("ERRR >>>");
+            print('ERRR >>>');
             print(e);
           }
           _data.add(d);
           notifyListeners();
         }
 
-        storage.setItem("isFirst", "true");
+        storage.setItem('isFirst', 'true');
       });
     } catch (e) {
-      print("ERRR ## > ");
+      print('ERRR ## > ');
       print(e);
     }
   }
@@ -201,11 +170,11 @@ class AppModel extends Model {
     await this._db.transaction((tx) async {
       try {
         var qry =
-            'INSERT INTO cart_list(shop_id,nama, deskripsi, harga,gambar) VALUES(${d.id},"${d.nama}","${d.deskripsi}",${d.harga},"${d.gambar}")';
+            "INSERT INTO cart_list(shopid, nama, deskripsi, harga, gambar) VALUES(${d.id},'${d.nama}', '${d.deskripsi}', ${d.harga},'${d.gambar}')";
         var _res = await tx.execute(qry);
         this.fetchCartList();
       } catch (e) {
-        print("ERRR @@ @@");
+        print('ERRR @@ @@');
         print(e);
       }
     });
@@ -216,19 +185,20 @@ class AppModel extends Model {
       // Get the records
       _cart = [];
       List<Map> list = await this._db.rawQuery('SELECT * FROM cart_list');
-      print("Cart len ${list.length.toString()}");
+      print('Cart len ${list.length.toString()}');
       list.map((dd) {
         Data d = new Data();
-        d.id = dd["id"];
-        d.nama = dd["nama"];
-        d.deskripsi = dd["deskripsi"];
-        d.harga = dd["harga"];
-        d.gambar = dd["gambar"];
+        d.id = dd['id'];
+        d.nama = dd['nama'];
+        d.deskripsi = dd['deskripsi'];
+        d.harga = dd['harga'];
+        d.gambar = dd['gambar'];
+        d.shopid = dd['shopid'];
         _cart.add(d);
       }).toList();
       notifyListeners();
     } catch (e) {
-      print("ERRR @##@");
+      print('ERRR @##@');
       print(e);
     }
   }
@@ -240,11 +210,11 @@ class AppModel extends Model {
   void addItem(Data dd) {
     Data d = new Data();
     d.id = _data.length + 1;
-    d.nama = "New";
-    d.deskripsi = "Barcode";
-    d.harga = 154.0;
+    d.nama = 'New';
+    d.deskripsi = 'deskripsi';
     d.gambar =
-        "https://rukminim1.flixcart.com/image/832/832/jao8uq80/shoe/3/r/q/sm323-9-sparx-white-original-imaezvxwmp6qz6tg.jpeg?q=70";
+        'https://rukminim.flixcart.com/image/832/832/jao8uq80/shoe/3/r/q/sm323-9-sparx-white-original-imaezvxwmp6qz6tg.jpeg?q=70';
+    d.harga = 1500;
     _data.add(d);
     notifyListeners();
   }
@@ -256,21 +226,21 @@ class AppModel extends Model {
   void addCart(Data dd) {
     print(dd);
     print(_cart);
-    int _index = _cart.indexWhere((d) => d.id == dd.id);
+    int _index = _cart.indexWhere((d) => d.shopid == dd.id);
     if (_index > -1) {
       success = false;
-      cartMsg = "${dd.nama.toUpperCase()} sudah ada di daftar keranjang.";
+      cartMsg = '${dd.nama.toUpperCase()} sudah ada di keranjang belanja.';
     } else {
       this.insertInCart(dd);
       success = true;
       cartMsg =
-          "${dd.nama.toUpperCase()} sukses ditambahkan dalam daftar keranjang.";
+          '${dd.nama.toUpperCase()} berhasil ditambahkan ke keranjang belanja.';
     }
   }
 
   removeCartDB(Data d) async {
     try {
-      var qry = "DELETE FROM cart_list where id = ${d.id}";
+      var qry = 'DELETE FROM cart_list where id = ${d.id}';
       this._db.rawDelete(qry).then((data) {
         print(data);
         int _index = _cart.indexWhere((dd) => dd.id == d.id);
@@ -280,7 +250,7 @@ class AppModel extends Model {
         print(e);
       });
     } catch (e) {
-      print("ERR rm cart$e");
+      print('ERR rm cart$e');
     }
   }
 

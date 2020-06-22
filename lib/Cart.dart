@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import "package:scoped_model/scoped_model.dart";
-import "ScopeManage.dart";
+import 'package:scoped_model/scoped_model.dart';
+import 'ScopeManage.dart';
 
 class Cart extends StatefulWidget {
-  static final String route = "Cart-route";
+  static final String route = 'Cart-route';
 
   @override
   State<StatefulWidget> createState() {
@@ -79,7 +79,7 @@ class CartState extends State<Cart> {
                   SizedBox(
                     height: 5.0,
                   ),
-                  Text("Harga ${d.harga.toString()}"),
+                  Text('Rp. ${d.harga.toString()}'),
                 ],
               ),
             ))
@@ -95,7 +95,7 @@ class CartState extends State<Cart> {
     return Scaffold(
         appBar: AppBar(
           elevation: 0.0,
-          title: Text("Daftar Keranjang"),
+          title: Text('Daftar Keranjang'),
         ),
         backgroundColor: Colors.white,
         body: Container(

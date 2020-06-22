@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:scoped_model/scoped_model.dart';
-import "./ScopeManage.dart";
+import './ScopeManage.dart';
 import './Home.dart';
 import 'Details.dart';
-import "Cart.dart";
+import 'Cart.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();

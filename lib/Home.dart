@@ -1,12 +1,12 @@
-import "package:flutter/material.dart";
-import "package:scoped_model/scoped_model.dart";
-import "Cart.dart";
-import "ScopeManage.dart";
-import "Details.dart";
+import 'package:flutter/material.dart';
+import 'package:scoped_model/scoped_model.dart';
+import 'Cart.dart';
+import 'ScopeManage.dart';
+import 'Details.dart';
 
 class Home extends StatefulWidget {
   final AppModel appModel;
-  static final String route = "Home-route";
+  static final String route = 'Home-route';
 
   Home({this.appModel});
 
@@ -18,13 +18,15 @@ class Home extends StatefulWidget {
 }
 
 class HomeState extends State<Home> {
-  Widget gridGenerate(List<Data> data, aspectRatio) {
+  Widget gridGenerate(List<Data> data, aspectRadtio) {
     return Padding(
-      padding: const EdgeInsets.all(8.0),
+      padding: EdgeInsets.all(8.0),
       child: GridView.builder(
         shrinkWrap: true,
         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: 2, childAspectRatio: aspectRatio),
+            crossAxisCount: 2,
+            childAspectRatio: MediaQuery.of(context).size.width /
+                (MediaQuery.of(context).size.height * 1.1 + 20)),
         itemBuilder: (BuildContext context, int index) {
           return Padding(
               padding: EdgeInsets.all(5.0),
@@ -36,7 +38,7 @@ class HomeState extends State<Home> {
                           builder: (context) => Details(detail: data[index])));
                 },
                 child: Container(
-                    height: 350.0,
+                    height: 300.0,
                     padding: EdgeInsets.all(5.0),
                     decoration: BoxDecoration(
                         color: Colors.white,
@@ -48,9 +50,10 @@ class HomeState extends State<Home> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
                         Container(
-                          height: 100.0,
+                          height: 200.0,
                           child: Padding(
-                            padding: EdgeInsets.all(10.0),
+                            padding:
+                                EdgeInsets.only(left: 10, right: 10, top: 10),
                             child: Row(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: <Widget>[
@@ -66,15 +69,12 @@ class HomeState extends State<Home> {
                             ),
                           ),
                         ),
-                        SizedBox(
-                          height: 10.0,
-                        ),
                         Padding(
                           padding: EdgeInsets.only(left: 10.0),
                           child: Text(
-                            "${data[index].nama}",
+                            '${data[index].nama}',
                             style: TextStyle(
-                                fontWeight: FontWeight.w600, fontSize: 15.0),
+                                fontWeight: FontWeight.w600, fontSize: 14.0),
                           ),
                         ),
                         Padding(
@@ -82,11 +82,14 @@ class HomeState extends State<Home> {
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: <Widget>[
+                              SizedBox(height: 50),
                               Padding(
                                 padding: EdgeInsets.only(right: 10.0),
                                 child: Text(
-                                  "Rp ${data[index].harga.toString()},-",
-                                  style: TextStyle(fontWeight: FontWeight.w500),
+                                  'Rp. ${data[index].harga}',
+                                  style: TextStyle(
+                                      fontSize: 15,
+                                      fontWeight: FontWeight.w500),
                                 ),
                               )
                             ],
@@ -112,7 +115,7 @@ class HomeState extends State<Home> {
     // TODO: implement build
     return Scaffold(
       appBar: AppBar(
-        title: Text("Supermarket Malioboro Mall"),
+        title: Text('Malioboro Mall Supermarket'),
         elevation: 0.0,
         actions: <Widget>[
           Stack(
@@ -134,7 +137,7 @@ class HomeState extends State<Home> {
                       child: Text(
                         (model.cartListing.length > 0)
                             ? model.cartListing.length.toString()
-                            : "",
+                            : '',
                         textAlign: TextAlign.center,
                         style: TextStyle(
                             color: Colors.orangeAccent,

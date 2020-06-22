@@ -1,10 +1,10 @@
-import "package:flutter/material.dart";
-import "package:scoped_model/scoped_model.dart";
-import "ScopeManage.dart";
-import "dart:async";
+import 'package:flutter/material.dart';
+import 'package:scoped_model/scoped_model.dart';
+import 'ScopeManage.dart';
+import 'dart:async';
 
 class Details extends StatefulWidget {
-  static final String route = "Home-route";
+  static final String route = 'Home-route';
   final Data detail;
   Details({this.detail});
 
@@ -18,7 +18,6 @@ class Details extends StatefulWidget {
 class DetailsState extends State<Details> {
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
 
-  PageController _controller;
   int active = 0;
 
   Widget buildDot(int index, int num) {
@@ -32,15 +31,6 @@ class DetailsState extends State<Details> {
             shape: BoxShape.circle),
       ),
     );
-  }
-
-  showSnak(bool flag, String name) {
-    _scaffoldKey.currentState.showSnackBar(SnackBar(
-      content: Text(flag
-          ? "$name added in favourite list"
-          : "$name removed from favourite list"),
-      duration: Duration(seconds: 2),
-    ));
   }
 
   showCartSnak(String msg, bool flag) {
@@ -64,7 +54,7 @@ class DetailsState extends State<Details> {
         key: _scaffoldKey,
         backgroundColor: Colors.white,
         appBar: AppBar(
-          title: Text("CONVERSE"),
+          title: Text('Detail Item'),
           elevation: 0.0,
         ),
         body: Container(
@@ -83,32 +73,9 @@ class DetailsState extends State<Details> {
                       children: <Widget>[
                         Container(
                           height: 200.0,
-                          child: PageView(
-                            controller: _controller,
-                            onPageChanged: (index) {
-                              print(index);
-                              setState(() {
-                                active = index;
-                              });
-                            },
-                            children: <Widget>[
-                              Image.network(
-                                'http://www.malmalioboro.co.id/${widget.detail.gambar}',
-                                height: 150.0,
-                              ),
-                              Image.network(
-                                'http://www.malmalioboro.co.id/${widget.detail.gambar}',
-                                height: 150.0,
-                              ),
-                              Image.network(
-                                'http://www.malmalioboro.co.id/${widget.detail.gambar}',
-                                height: 150.0,
-                              ),
-                              Image.network(
-                                'http://www.malmalioboro.co.id/${widget.detail.gambar}',
-                                height: 150.0,
-                              )
-                            ],
+                          child: Image.network(
+                            'http://www.malmalioboro.co.id/${widget.detail.gambar}',
+                            height: 150.0,
                           ),
                         ),
                         SizedBox(
@@ -116,12 +83,6 @@ class DetailsState extends State<Details> {
                         ),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
-                          children: <Widget>[
-                            buildDot(active, 0),
-                            buildDot(active, 1),
-                            buildDot(active, 2),
-                            buildDot(active, 3)
-                          ],
                         ),
                       ],
                     ),
@@ -135,6 +96,7 @@ class DetailsState extends State<Details> {
                           verticalDirection: VerticalDirection.down,
                           crossAxisAlignment: CrossAxisAlignment.end,
                           mainAxisAlignment: MainAxisAlignment.end,
+                          children: <Widget>[],
                         ),
                       ))
                 ],
@@ -155,8 +117,7 @@ class DetailsState extends State<Details> {
                     ),
                     Padding(
                       padding: EdgeInsets.only(top: 10.0),
-                      child: Text(
-                          "Flutter: Bubble tab indicator for TabBar. Using a Stack Widget and then adding elements to stack on different levels(stacking components like Tabs, above"),
+                      child: Text('Barcode: ${widget.detail.deskripsi}'),
                     )
                   ],
                 ),
@@ -180,11 +141,11 @@ class DetailsState extends State<Details> {
                       Container(
                         width: 60.0,
                         child: Text(
-                          "Total Amount",
+                          'Total Harga',
                           style: TextStyle(fontSize: 12.0, color: Colors.grey),
                         ),
                       ),
-                      Text("\$${widget.detail.harga.toString()}",
+                      Text('Rp. ${widget.detail.harga}',
                           style: TextStyle(
                               fontSize: 25.0, fontWeight: FontWeight.w600)),
                     ],
@@ -201,7 +162,7 @@ class DetailsState extends State<Details> {
                         });
                       },
                       child: Text(
-                        "ADD TO CART",
+                        'TAMBAH',
                         style: TextStyle(color: Colors.white),
                       ),
                     );
