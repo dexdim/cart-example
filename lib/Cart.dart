@@ -34,9 +34,6 @@ class CartState extends State<Cart> {
                   boxShadow: [
                     BoxShadow(color: Colors.black12, blurRadius: 5.0)
                   ],
-                  borderRadius: BorderRadius.only(
-                      topRight: Radius.circular(10.0),
-                      bottomRight: Radius.circular(10.0)),
                   image: DecorationImage(
                       image: NetworkImage(
                           'http://www.malmalioboro.co.id/${d.gambar}'),
@@ -79,7 +76,7 @@ class CartState extends State<Cart> {
                   SizedBox(
                     height: 5.0,
                   ),
-                  Text('Rp. ${d.harga.toString()}'),
+                  Text('Rp. ${d.harga}'),
                 ],
               ),
             ))
@@ -94,7 +91,7 @@ class CartState extends State<Cart> {
     // TODO: implement build
     return Scaffold(
         appBar: AppBar(
-          elevation: 0.0,
+          elevation: 0,
           title: Text('Daftar Keranjang'),
         ),
         backgroundColor: Colors.white,
@@ -111,12 +108,40 @@ class CartState extends State<Cart> {
               );
             },
           ),
-        ));
-  }
+        ),
+        bottomNavigationBar: BottomAppBar(
+          elevation: 5,
+          child: Container(
+            height: 50,
+            child: ScopedModelDescendant<AppModel>(
+                builder: (context, child, model) {
+              dynamic totalHarga;
+              List cart;
+              //List<dynamic> _cartList;
+              //model.cartListing.map((d) => _cartList);
+              print(model.cartListing);
+              /*
+              totalHarga = _cartList.fold(0, (sum, item) {
+                sum += item.harga;
+              });
+              */
 
-  int get totalPrice {
-    return AppModel._cart.fold(0, (sum, item) {
-      return sum += item.harga;
-    });
+              return Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: <Widget>[
+                  Text('Total harga $totalHarga'),
+                  RaisedButton(
+                    color: Colors.deepOrange,
+                    onPressed: () {},
+                    child: Text(
+                      'CHECKOUT',
+                      style: TextStyle(color: Colors.white),
+                    ),
+                  )
+                ],
+              );
+            }),
+          ),
+        ));
   }
 }

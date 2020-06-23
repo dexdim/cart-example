@@ -66,7 +66,7 @@ class DetailsState extends State<Details> {
               Stack(
                 children: <Widget>[
                   Container(
-                    height: 280.0,
+                    height: 220.0,
                     padding: EdgeInsets.only(top: 10.0),
                     color: Colors.white,
                     child: Column(
@@ -78,9 +78,6 @@ class DetailsState extends State<Details> {
                             height: 150.0,
                           ),
                         ),
-                        SizedBox(
-                          height: 10.0,
-                        ),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                         ),
@@ -88,7 +85,7 @@ class DetailsState extends State<Details> {
                     ),
                   ),
                   Container(
-                      height: 270.0,
+                      height: 250.0,
                       alignment: Alignment(1.0, 1.0),
                       child: Padding(
                         padding: EdgeInsets.only(right: 15.0),
@@ -126,8 +123,8 @@ class DetailsState extends State<Details> {
           ),
         ),
         bottomNavigationBar: Container(
-            margin: EdgeInsets.only(bottom: 18.0),
-            height: 60.0,
+            //margin: EdgeInsets.only(top: 10),
+            height: 50.0,
             decoration: BoxDecoration(
                 color: Colors.white,
                 border: Border(
@@ -139,10 +136,11 @@ class DetailsState extends State<Details> {
                   child: Row(
                     children: <Widget>[
                       Container(
+                        margin: EdgeInsets.only(right: 20),
                         width: 60.0,
                         child: Text(
-                          'Total Harga',
-                          style: TextStyle(fontSize: 12.0, color: Colors.grey),
+                          'Subtotal Harga',
+                          style: TextStyle(fontSize: 14.0, color: Colors.grey),
                         ),
                       ),
                       Text('Rp. ${widget.detail.harga}',

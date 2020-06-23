@@ -26,7 +26,7 @@ class HomeState extends State<Home> {
         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
             crossAxisCount: 2,
             childAspectRatio: MediaQuery.of(context).size.width /
-                (MediaQuery.of(context).size.height * 1.1 + 20)),
+                (MediaQuery.of(context).size.height + 150)),
         itemBuilder: (BuildContext context, int index) {
           return Padding(
               padding: EdgeInsets.all(5.0),
@@ -70,7 +70,7 @@ class HomeState extends State<Home> {
                           ),
                         ),
                         Padding(
-                          padding: EdgeInsets.only(left: 10.0),
+                          padding: EdgeInsets.only(top: 20, left: 20),
                           child: Text(
                             '${data[index].nama}',
                             style: TextStyle(
@@ -84,7 +84,7 @@ class HomeState extends State<Home> {
                             children: <Widget>[
                               SizedBox(height: 50),
                               Padding(
-                                padding: EdgeInsets.only(right: 10.0),
+                                padding: EdgeInsets.only(right: 20.0),
                                 child: Text(
                                   'Rp. ${data[index].harga}',
                                   style: TextStyle(
@@ -121,7 +121,7 @@ class HomeState extends State<Home> {
           Stack(
             children: <Widget>[
               Padding(
-                padding: EdgeInsets.all(10.0),
+                padding: EdgeInsets.fromLTRB(10, 10, 20, 20),
                 child: InkResponse(
                   onTap: () {
                     Navigator.push(context,
