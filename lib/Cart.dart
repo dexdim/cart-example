@@ -13,8 +13,6 @@ class Cart extends StatefulWidget {
 }
 
 class CartState extends State<Cart> {
-  List cartList = AppModel.cartListing;
-
   Widget generateCart(Data d) {
     return Padding(
       padding: EdgeInsets.all(5.0),
@@ -117,7 +115,7 @@ class CartState extends State<Cart> {
   }
 
   int get totalPrice {
-    return cartList.fold(0, (sum, item) {
+    return AppModel._cart.fold(0, (sum, item) {
       return sum += item.harga;
     });
   }
