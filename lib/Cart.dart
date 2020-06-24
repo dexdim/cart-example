@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:scoped_model/scoped_model.dart';
+import 'package:flutter_open_whatsapp/flutter_open_whatsapp.dart';
 import 'ScopeManage.dart';
 
 class Cart extends StatefulWidget {
@@ -11,6 +12,12 @@ class Cart extends StatefulWidget {
     return CartState();
   }
 }
+
+printCart(Data d) {
+  var cart = AppModel.cartListing;
+    for (var i = 0; i <= cart.length; i++){
+    FlutterOpenWhatsapp.sendSingleMessage("62888060605032", "${d.nama}");
+}}
 
 class CartState extends State<Cart> {
   Widget generateCart(Data d) {
@@ -115,29 +122,42 @@ class CartState extends State<Cart> {
             height: 50,
             child: ScopedModelDescendant<AppModel>(
                 builder: (context, child, model) {
-              dynamic totalHarga;
-              List cart;
-              //List<dynamic> _cartList;
-              //model.cartListing.map((d) => _cartList);
-              print(model.cartListing);
-              /*
-              totalHarga = _cartList.fold(0, (sum, item) {
-                sum += item.harga;
-              });
-              */
+              dynamic totalHarga = (model.cartListing
+                  .fold(0, (total, current) => total + current.harga));
 
               return Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
-                  Text('Total harga $totalHarga'),
-                  RaisedButton(
-                    color: Colors.deepOrange,
-                    onPressed: () {},
-                    child: Text(
-                      'CHECKOUT',
-                      style: TextStyle(color: Colors.white),
+                  Container(
+                    margin: EdgeInsets.only(right: 20),
+                    child: Row(
+                      children: <Widget>[
+                        Container(
+                            width: 110,
+                            child: Text('Harga total:',
+                                style: TextStyle(
+                                    fontSize: 20.0,
+                                    color: Colors.grey,
+                                    fontWeight: FontWeight.w400))),
+                        Text('Rp $totalHarga',
+                            style: TextStyle(
+                                fontSize: 20.0, fontWeight: FontWeight.w500)),
+                      ],
                     ),
-                  )
+                  ),
+                  ScopedModelDescendant<AppModel>(
+                      builder: (context, child, model) {
+                    return RaisedButton(
+                      color: Colors.deepOrange,
+                      onPressed: () {
+                        model.cartListing.map((d) => printCart(d)).toList();
+                      },
+                      child: Text(
+                        'CHECKOUT',
+                        style: TextStyle(color: Colors.white),
+                      ),
+                    );
+                  }),
                 ],
               );
             }),

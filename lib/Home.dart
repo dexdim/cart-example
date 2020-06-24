@@ -86,7 +86,7 @@ class HomeState extends State<Home> {
                               Padding(
                                 padding: EdgeInsets.only(right: 20.0),
                                 child: Text(
-                                  'Rp. ${data[index].harga}',
+                                  'Rp ${data[index].harga}',
                                   style: TextStyle(
                                       fontSize: 15,
                                       fontWeight: FontWeight.w500),

@@ -110,11 +110,15 @@ class DetailsState extends State<Details> {
                     Text(
                       widget.detail.nama,
                       style: TextStyle(
-                          fontWeight: FontWeight.w500, fontSize: 19.0),
+                          fontWeight: FontWeight.w500, fontSize: 20.0),
                     ),
                     Padding(
                       padding: EdgeInsets.only(top: 10.0),
-                      child: Text('Barcode: ${widget.detail.deskripsi}'),
+                      child: Text(
+                        'Kode barcode: ${widget.detail.deskripsi}',
+                        style: TextStyle(
+                            fontWeight: FontWeight.w400, fontSize: 16),
+                      ),
                     )
                   ],
                 ),
@@ -130,22 +134,23 @@ class DetailsState extends State<Details> {
                 border: Border(
                     top: BorderSide(color: Colors.grey[300], width: 1.0))),
             child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 Container(
+                  margin: EdgeInsets.only(right: 20),
                   child: Row(
                     children: <Widget>[
                       Container(
-                        margin: EdgeInsets.only(right: 20),
-                        width: 60.0,
-                        child: Text(
-                          'Subtotal Harga',
-                          style: TextStyle(fontSize: 14.0, color: Colors.grey),
-                        ),
+                        width: 140.0,
+                        child: Text('Harga subtotal:',
+                            style: TextStyle(
+                                fontSize: 20.0,
+                                color: Colors.grey,
+                                fontWeight: FontWeight.w400)),
                       ),
-                      Text('Rp. ${widget.detail.harga}',
+                      Text('Rp ${widget.detail.harga}',
                           style: TextStyle(
-                              fontSize: 25.0, fontWeight: FontWeight.w600)),
+                              fontSize: 20.0, fontWeight: FontWeight.w500)),
                     ],
                   ),
                 ),
