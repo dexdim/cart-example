@@ -13,12 +13,6 @@ class Cart extends StatefulWidget {
   }
 }
 
-printCart(Data d) {
-  var cart = AppModel.cartListing;
-    for (var i = 0; i <= cart.length; i++){
-    FlutterOpenWhatsapp.sendSingleMessage("62888060605032", "${d.nama}");
-}}
-
 class CartState extends State<Cart> {
   Widget generateCart(Data d) {
     return Padding(
@@ -145,19 +139,27 @@ class CartState extends State<Cart> {
                       ],
                     ),
                   ),
-                  ScopedModelDescendant<AppModel>(
-                      builder: (context, child, model) {
-                    return RaisedButton(
-                      color: Colors.deepOrange,
-                      onPressed: () {
-                        model.cartListing.map((d) => printCart(d)).toList();
-                      },
-                      child: Text(
-                        'CHECKOUT',
-                        style: TextStyle(color: Colors.white),
-                      ),
-                    );
-                  }),
+                  RaisedButton(
+                    color: Colors.deepOrange,
+                    onPressed: () {
+                      printItem(Data d) {
+                        print(
+                            'Nama item : ${d.nama}\nHarga item : Rp ${d.harga}\n');
+                      }
+
+                      printCart() {
+                        print('MALIOBORO MALL SUPERMARKET\nDaftar keranjang\n');
+                        print('=================\n\n');
+                        model.cartListing.map((d) => printItem(d)).toString();
+                        print(
+                            '\n=================\nTotal harga : Rp $totalHarga');
+                      }
+                    },
+                    child: Text(
+                      'CHECKOUT',
+                      style: TextStyle(color: Colors.white),
+                    ),
+                  )
                 ],
               );
             }),
