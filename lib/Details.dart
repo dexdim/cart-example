@@ -1,7 +1,8 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:scoped_model/scoped_model.dart';
+
 import 'ScopeManage.dart';
-import 'dart:async';
 
 class Details extends StatefulWidget {
   static final String route = 'Home-route';

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:scoped_model/scoped_model.dart';
+
 import 'Cart.dart';
 import 'ScopeManage.dart';
 import 'Details.dart';

@@ -7,6 +7,7 @@ import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:localstorage/localstorage.dart';
 import 'package:http/http.dart' as http;
+
 import 'Cart.dart';
 
 class Data {
@@ -30,6 +31,7 @@ class AppModel extends Model {
   Database _db;
   Directory tempDir;
   String tempPath;
+
   final LocalStorage storage = new LocalStorage('app_data');
   final String url =
       'http://www.malmalioboro.co.id/index.php/api/produk/get_list';
