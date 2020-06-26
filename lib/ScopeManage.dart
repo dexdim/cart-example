@@ -7,7 +7,6 @@ import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:localstorage/localstorage.dart';
 import 'package:http/http.dart' as http;
-
 import 'Cart.dart';
 
 class Data {
@@ -31,10 +30,11 @@ class AppModel extends Model {
   Database _db;
   Directory tempDir;
   String tempPath;
-
   final LocalStorage storage = new LocalStorage('app_data');
   final String url =
       'http://www.malmalioboro.co.id/index.php/api/produk/get_list';
+
+  get finalprint => printCart();
 
   Future<String> fetchData() async {
     Map body = {'idtenan': '136'};
@@ -263,16 +263,7 @@ class AppModel extends Model {
     this.removeCartDB(dd);
   }
 
-  printItem(Data d) {
-    print('Nama item : ${d.nama}\nHarga item : Rp ${d.harga}\n');
-  }
-
-  printCart() {
-    print('MALIOBORO MALL SUPERMARKET\nDaftar keranjang\n');
-    print('=================\n\n');
-    cartListing.map((d) => printItem(d)).toString();
-    print('\n=================\nTotal harga : Rp ${CartState.totalHarga}');
-  }
+  printCart() {}
 }
 
 class Item {

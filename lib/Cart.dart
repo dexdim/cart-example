@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:scoped_model/scoped_model.dart';
 import 'package:flutter_open_whatsapp/flutter_open_whatsapp.dart';
-
 import 'ScopeManage.dart';
 
 class Cart extends StatefulWidget {
@@ -144,10 +143,21 @@ class CartState extends State<Cart> {
                   RaisedButton(
                     color: Colors.deepOrange,
                     onPressed: () {
-                      var print;
-                      print = model.printCart().toString();
+                      var finalprint = '';
+                      printItem(Data d) {
+                        finalprint +=
+                            'Nama item : ${d.nama}\nHarga item : Rp ${d.harga}\n';
+                      }
+
+                      finalprint +=
+                          'MALIOBORO MALL SUPERMARKET\nDaftar keranjang\n';
+                      finalprint += '=================\n\n';
+                      model.cartListing.map((d) => printItem(d)).toString();
+                      finalprint +=
+                          '\n=================\nTotal harga : Rp ${CartState.totalHarga}';
+
                       FlutterOpenWhatsapp.sendSingleMessage(
-                          "6288806065032", "$print");
+                          '6288806065032', '${finalprint.toString()}');
                     },
                     child: Text(
                       'CHECKOUT',
