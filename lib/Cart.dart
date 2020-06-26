@@ -14,6 +14,7 @@ class Cart extends StatefulWidget {
 }
 
 class CartState extends State<Cart> {
+  static var totalHarga;
   Widget generateCart(Data d) {
     return Padding(
       padding: EdgeInsets.all(5.0),
@@ -116,7 +117,7 @@ class CartState extends State<Cart> {
             height: 50,
             child: ScopedModelDescendant<AppModel>(
                 builder: (context, child, model) {
-              dynamic totalHarga = (model.cartListing
+              totalHarga = (model.cartListing
                   .fold(0, (total, current) => total + current.harga));
 
               return Row(
@@ -142,18 +143,10 @@ class CartState extends State<Cart> {
                   RaisedButton(
                     color: Colors.deepOrange,
                     onPressed: () {
-                      printItem(Data d) {
-                        print(
-                            'Nama item : ${d.nama}\nHarga item : Rp ${d.harga}\n');
-                      }
-
-                      printCart() {
-                        print('MALIOBORO MALL SUPERMARKET\nDaftar keranjang\n');
-                        print('=================\n\n');
-                        model.cartListing.map((d) => printItem(d)).toString();
-                        print(
-                            '\n=================\nTotal harga : Rp $totalHarga');
-                      }
+                      String print;
+                      print = model.printCart().toString();
+                      FlutterOpenWhatsapp.sendSingleMessage(
+                          "6288806065032", "$print");
                     },
                     child: Text(
                       'CHECKOUT',

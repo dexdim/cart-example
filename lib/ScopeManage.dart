@@ -7,6 +7,7 @@ import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:localstorage/localstorage.dart';
 import 'package:http/http.dart' as http;
+import 'Cart.dart';
 
 class Data {
   int id;
@@ -20,6 +21,7 @@ class Data {
 List<dynamic> data;
 
 class AppModel extends Model {
+  CartState cartState;
   List<Item> _items = [];
   List<Data> _data = [];
   List<Data> _cart = [];
@@ -257,6 +259,17 @@ class AppModel extends Model {
   // Remove Cart
   void removeCart(Data dd) {
     this.removeCartDB(dd);
+  }
+
+  printItem(Data d) {
+    print('Nama item : ${d.nama}\nHarga item : Rp ${d.harga}\n');
+  }
+
+  printCart() {
+    print('MALIOBORO MALL SUPERMARKET\nDaftar keranjang\n');
+    print('=================\n\n');
+    cartListing.map((d) => printItem(d)).toString();
+    print('\n=================\nTotal harga : Rp ${CartState.totalHarga}');
   }
 }
 
