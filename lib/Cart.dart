@@ -143,7 +143,7 @@ class CartState extends State<Cart> {
                   RaisedButton(
                     color: Colors.deepOrange,
                     onPressed: () {
-                      String print;
+                      var print;
                       print = model.printCart().toString();
                       FlutterOpenWhatsapp.sendSingleMessage(
                           "6288806065032", "$print");
