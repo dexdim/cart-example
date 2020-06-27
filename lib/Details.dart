@@ -55,7 +55,7 @@ class DetailsState extends State<Details> {
         backgroundColor: Colors.white,
         appBar: AppBar(
           title: Text('Detail Item'),
-          elevation: 0.0,
+          elevation: 5,
         ),
         body: Container(
           decoration: BoxDecoration(

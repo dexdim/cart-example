@@ -116,7 +116,7 @@ class HomeState extends State<Home> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Malioboro Mall Supermarket'),
-        elevation: 0.0,
+        elevation: 5,
         actions: <Widget>[
           Stack(
             children: <Widget>[

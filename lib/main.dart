@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:scoped_model/scoped_model.dart';
-import './ScopeManage.dart';
-import './Home.dart';
+import 'Home.dart';
 import 'Details.dart';
 import 'Cart.dart';
+import 'Forms.dart';
+import 'ScopeManage.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -16,7 +17,8 @@ class Main extends StatelessWidget {
   final routes = <String, WidgetBuilder>{
     Home.route: (BuildContext context) => Home(),
     Details.route: (BuildContext context) => Details(),
-    Cart.route: (BuildContext context) => Cart()
+    Cart.route: (BuildContext context) => Cart(),
+    Forms.route: (BuildContext context) => Forms()
   };
 
   @override

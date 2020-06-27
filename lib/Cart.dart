@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:scoped_model/scoped_model.dart';
-import 'package:flutter_open_whatsapp/flutter_open_whatsapp.dart';
 import 'ScopeManage.dart';
+import 'Forms.dart';
 
 class Cart extends StatefulWidget {
   static final String route = 'Cart-route';
@@ -93,7 +93,7 @@ class CartState extends State<Cart> {
     // TODO: implement build
     return Scaffold(
         appBar: AppBar(
-          elevation: 0,
+          elevation: 5,
           title: Text('Daftar Keranjang'),
         ),
         backgroundColor: Colors.white,
@@ -112,7 +112,6 @@ class CartState extends State<Cart> {
           ),
         ),
         bottomNavigationBar: BottomAppBar(
-          elevation: 5,
           child: Container(
             height: 50,
             child: ScopedModelDescendant<AppModel>(
@@ -143,21 +142,7 @@ class CartState extends State<Cart> {
                   RaisedButton(
                     color: Colors.deepOrange,
                     onPressed: () {
-                      var finalprint = '';
-                      printItem(Data d) {
-                        finalprint +=
-                            'Nama item : ${d.nama}\nHarga item : Rp ${d.harga}\n';
-                      }
-
-                      finalprint +=
-                          'MALIOBORO MALL SUPERMARKET\nDaftar keranjang\n';
-                      finalprint += '=================\n\n';
-                      model.cartListing.map((d) => printItem(d)).toString();
-                      finalprint +=
-                          '\n=================\nTotal harga : Rp ${CartState.totalHarga}';
-
-                      FlutterOpenWhatsapp.sendSingleMessage(
-                          '6288806065032', '${finalprint.toString()}');
+                      Forms();
                     },
                     child: Text(
                       'CHECKOUT',
