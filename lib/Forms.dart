@@ -28,8 +28,7 @@ class FormsState extends State<Forms> {
         ),
         bottomNavigationBar:
             ScopedModelDescendant<AppModel>(builder: (context, child, model) {
-          child:
-          RaisedButton(
+          return RaisedButton(
             onPressed: () {
               var finalprint = '';
               printItem(Data d) {
@@ -39,8 +38,8 @@ class FormsState extends State<Forms> {
 
               finalprint += 'Halo Supermarket Malioboro Mall\n';
               finalprint +=
-                  'Berikut adalah daftar pesanan belanja atas nama ${namapemesan}\n';
-              finalprint += 'Nomor handphone: ${nomorhp}';
+                  'Berikut adalah daftar pesanan belanja atas nama $namapemesan\n';
+              finalprint += 'Nomor handphone: $nomorhp';
               finalprint += '=================\n\n';
               model.cartListing.map((d) => printItem(d)).toString();
               finalprint +=
