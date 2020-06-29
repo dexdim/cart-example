@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:scoped_model/scoped_model.dart';
 import 'Home.dart';
@@ -12,7 +13,7 @@ void main() {
 }
 
 class Main extends StatelessWidget {
-  final AppModel appModel = AppModel();
+  static final AppModel appModel = AppModel();
 
   final routes = <String, WidgetBuilder>{
     Home.route: (BuildContext context) => Home(),
@@ -27,11 +28,57 @@ class Main extends StatelessWidget {
     return ScopedModel<AppModel>(
       model: appModel,
       child: MaterialApp(
-        home: Home(
-          appModel: appModel,
-        ),
+        debugShowCheckedModeBanner: false,
+        home: SplashScreen(title: 'Malioboro Mall Supermarket'),
         routes: routes,
-        theme: ThemeData(primaryColor: Colors.white),
+        theme: ThemeData(primaryColor: Colors.white, fontFamily: 'OpenSans'),
+      ),
+    );
+  }
+}
+
+class SplashScreen extends StatefulWidget {
+  SplashScreen({Key key, this.title}) : super(key: key);
+
+  final String title;
+
+  @override
+  SplashScreenState createState() => new SplashScreenState();
+}
+
+class SplashScreenState extends State<SplashScreen> {
+  startTime() async {
+    var _duration = new Duration(seconds: 3);
+    return new Timer(_duration, navigationPage);
+  }
+
+  void navigationPage() {
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (context) => Home(
+                  appModel: Main.appModel,
+                )));
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    startTime();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return new Container(
+      alignment: Alignment.center,
+      decoration: new BoxDecoration(color: Colors.white),
+      child: new Container(
+        margin: new EdgeInsets.all(30.0),
+        width: 350.0,
+        height: 350.0,
+        child: new Image.asset(
+          'assets/logo.png',
+        ),
       ),
     );
   }

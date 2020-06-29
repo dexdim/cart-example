@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:scoped_model/scoped_model.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'Cart.dart';
 import 'ScopeManage.dart';
 import 'Details.dart';
@@ -26,7 +27,7 @@ class HomeState extends State<Home> {
         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
             crossAxisCount: 2,
             childAspectRatio: MediaQuery.of(context).size.width /
-                (MediaQuery.of(context).size.height + 150)),
+                (MediaQuery.of(context).size.height / 1.1)),
         itemBuilder: (BuildContext context, int index) {
           return Padding(
               padding: EdgeInsets.all(5.0),
@@ -38,59 +39,53 @@ class HomeState extends State<Home> {
                           builder: (context) => Details(detail: data[index])));
                 },
                 child: Container(
-                    height: 300.0,
+                    height: 330.0,
                     padding: EdgeInsets.all(5.0),
                     decoration: BoxDecoration(
                         color: Colors.white,
                         shape: BoxShape.rectangle,
                         boxShadow: [
-                          BoxShadow(color: Colors.black12, blurRadius: 8.0)
+                          BoxShadow(color: Colors.black12, blurRadius: 10.0)
                         ]),
                     child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: <Widget>[
                         Container(
-                          height: 200.0,
-                          child: Padding(
-                            padding:
-                                EdgeInsets.only(left: 10, right: 10, top: 10),
-                            child: Row(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: <Widget>[
-                                Expanded(
-                                  child: Container(
-                                    child: Image.network(
+                            height: 310.0,
+                            child: Column(children: <Widget>[
+                              Container(
+                                child: CachedNetworkImage(
+                                  imageUrl:
                                       'http://www.malmalioboro.co.id/${data[index].gambar}',
-                                      fit: BoxFit.contain,
-                                    ),
-                                  ),
+                                  progressIndicatorBuilder:
+                                      (context, url, downloadProgress) =>
+                                          CircularProgressIndicator(
+                                              value: downloadProgress.progress),
+                                  errorWidget: (context, url, error) =>
+                                      Icon(Icons.error),
+                                  fit: BoxFit.contain,
                                 ),
-                              ],
-                            ),
-                          ),
-                        ),
-                        Padding(
-                          padding: EdgeInsets.only(top: 20, left: 20),
-                          child: Text(
-                            '${data[index].nama}',
-                            style: TextStyle(
-                                fontWeight: FontWeight.w600, fontSize: 14.0),
-                          ),
-                        ),
-                        Padding(
-                          padding: EdgeInsets.only(left: 10.0),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: <Widget>[
-                              SizedBox(height: 50),
+                              ),
                               Padding(
-                                padding: EdgeInsets.only(right: 20.0),
+                                padding: EdgeInsets.all(10),
                                 child: Text(
-                                  'Rp ${data[index].harga}',
+                                  '${data[index].nama}',
+                                  textAlign: TextAlign.center,
                                   style: TextStyle(
-                                      fontSize: 15,
-                                      fontWeight: FontWeight.w500),
+                                      fontWeight: FontWeight.w600,
+                                      fontSize: 18.0),
                                 ),
+                              ),
+                            ])),
+                        Padding(
+                          padding: EdgeInsets.only(right: 10),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: <Widget>[
+                              Text(
+                                'Rp ${data[index].harga}',
+                                style: TextStyle(
+                                    fontSize: 18, fontWeight: FontWeight.w500),
                               )
                             ],
                           ),
@@ -115,13 +110,14 @@ class HomeState extends State<Home> {
     // TODO: implement build
     return Scaffold(
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         title: Text('Malioboro Mall Supermarket'),
         elevation: 5,
         actions: <Widget>[
           Stack(
             children: <Widget>[
               Padding(
-                padding: EdgeInsets.fromLTRB(10, 10, 20, 20),
+                padding: EdgeInsets.only(top: 15, right: 15),
                 child: InkResponse(
                   onTap: () {
                     Navigator.push(context,
@@ -131,6 +127,7 @@ class HomeState extends State<Home> {
                 ),
               ),
               Positioned(
+                //right: 500,
                 child: ScopedModelDescendant<AppModel>(
                   builder: (context, child, model) {
                     return Container(
@@ -140,7 +137,8 @@ class HomeState extends State<Home> {
                             : '',
                         textAlign: TextAlign.center,
                         style: TextStyle(
-                            color: Colors.orangeAccent,
+                            fontSize: 16,
+                            color: Colors.redAccent,
                             fontWeight: FontWeight.bold),
                       ),
                     );

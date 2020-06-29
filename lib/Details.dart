@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:scoped_model/scoped_model.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'ScopeManage.dart';
 import 'dart:async';
 
@@ -66,16 +67,23 @@ class DetailsState extends State<Details> {
               Stack(
                 children: <Widget>[
                   Container(
-                    height: 220.0,
-                    padding: EdgeInsets.only(top: 10.0),
+                    height: 350.0,
+                    padding: EdgeInsets.only(top: 25.0),
                     color: Colors.white,
                     child: Column(
                       children: <Widget>[
                         Container(
-                          height: 200.0,
-                          child: Image.network(
-                            'http://www.malmalioboro.co.id/${widget.detail.gambar}',
-                            height: 150.0,
+                          height: 300.0,
+                          child: CachedNetworkImage(
+                            imageUrl:
+                                'http://www.malmalioboro.co.id/${widget.detail.gambar}',
+                            progressIndicatorBuilder:
+                                (context, url, downloadProgress) =>
+                                    CircularProgressIndicator(
+                                        value: downloadProgress.progress),
+                            errorWidget: (context, url, error) =>
+                                Icon(Icons.error),
+                            fit: BoxFit.contain,
                           ),
                         ),
                         Row(
@@ -157,7 +165,7 @@ class DetailsState extends State<Details> {
                 ScopedModelDescendant<AppModel>(
                   builder: (context, child, model) {
                     return RaisedButton(
-                      color: Colors.deepOrange,
+                      color: Colors.deepOrangeAccent,
                       onPressed: () {
                         model.addCart(widget.detail);
                         Timer(Duration(milliseconds: 500), () {

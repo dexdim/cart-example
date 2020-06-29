@@ -1,5 +1,5 @@
-name: shopping
-description: A new Flutter project.
+name: malioboro_mall_supermarket
+description: Aplikasi Malioboro Mall Supermarket
 
 version: 1.0.0+1
 
@@ -17,10 +17,21 @@ dependencies:
   localstorage: ^3.0.2+5
   http: ^0.12.1
   flutter_open_whatsapp: ^0.1.2
+  cached_network_image: ^2.2.0+1
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
 
 flutter:
+  assets:
+    - assets/logo.png
+
+  fonts:
+    - family: OpenSans
+      fonts:
+        - asset: fonts/OpenSans-Bold.ttf
+        - asset: fonts/OpenSans-Regular.ttf
+        - asset: fonts/OpenSans-Italic.ttf
+
   uses-material-design: true

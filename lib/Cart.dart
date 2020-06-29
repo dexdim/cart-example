@@ -140,12 +140,13 @@ class CartState extends State<Cart> {
                     ),
                   ),
                   RaisedButton(
-                    color: Colors.deepOrange,
+                    color: Colors.deepOrangeAccent,
                     onPressed: () {
-                      Forms();
+                      Navigator.push(context,
+                          MaterialPageRoute(builder: (context) => Forms()));
                     },
                     child: Text(
-                      'CHECKOUT',
+                      'NEXT',
                       style: TextStyle(color: Colors.white),
                     ),
                   )
