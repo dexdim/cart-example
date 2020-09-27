@@ -32,7 +32,7 @@ class AppModel extends Model {
   String tempPath;
   final LocalStorage storage = new LocalStorage('app_data');
   final String url =
-      'http://www.malmalioboro.co.id/index.php/api/produk/get_list';
+      'Your API here';
 
   get finalprint => printCart();
 
